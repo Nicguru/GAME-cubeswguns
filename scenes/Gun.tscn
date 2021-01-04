@@ -12,6 +12,17 @@ z_index = 1
 collision_mask = 0
 script = ExtResource( 2 )
 
+[node name="RayCast2D" type="RayCast2D" parent="."]
+enabled = true
+cast_to = Vector2( 800, 0 )
+collision_mask = 14
+collide_with_areas = true
+
+[node name="Line2D" type="Line2D" parent="RayCast2D"]
+width = 1.0
+default_color = Color( 1, 0.4, 0.4, 1 )
+end_cap_mode = 2
+
 [node name="Sprite" type="Sprite" parent="."]
 scale = Vector2( 2, 2 )
 texture = ExtResource( 1 )

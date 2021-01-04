@@ -23,8 +23,9 @@ animation = "look"
 offset = Vector2( 0, -10 )
 
 [node name="Gun" parent="." instance=ExtResource( 4 )]
-position = Vector2( 4.50896, -4.83618 )
+position = Vector2( 4.55431, -4.88112 )
 collision_mask = 14
 
 [node name="GunPoint" type="Node2D" parent="."]
 position = Vector2( 4.55431, -4.88112 )
+[connection signal="weapon_fired" from="Gun" to="." method="_on_Gun_weapon_fired"]

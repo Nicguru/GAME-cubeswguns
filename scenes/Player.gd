@@ -25,7 +25,6 @@ var velocity_prev : Vector2 = Vector2()
 
 var is_bullet_time = false
 
-
 func _physics_process(delta):
 	
 	#inputs
@@ -78,14 +77,6 @@ func _physics_process(delta):
 	velocity.x = lerp(velocity.x, 0, 0.1)
 	
 	
-	#fire gun
-	if Input.is_action_pressed("fire") and $Gun.can_fire:
-		var kickback_vel = $Gun.fire()
-		if not is_on_floor():
-			velocity.x = kickback_vel.x
-			velocity.y = min(kickback_vel.y, velocity.y)
-	
-	
 	#Squash and Stretch sprite based on movement
 	if not landed and is_on_floor():
 		landed = true
@@ -129,3 +120,10 @@ func _process(delta):
 
 func _on_Fallzone_body_entered(body):
 	get_tree().change_scene("res://scenes/Main.tscn")
+
+
+func _on_Gun_weapon_fired(recoil_vector, damage, hit_position):
+	if not is_on_floor():
+		velocity.x = recoil_vector.x
+		velocity.y = min(recoil_vector.y, velocity.y)
+
