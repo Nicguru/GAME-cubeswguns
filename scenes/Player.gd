@@ -2,26 +2,29 @@ extends KinematicBody2D
 
 const ACCEL : int = 50
 const MAX_SPEED = 300
+const MAX_FALL_SPEED = 600
 const GRAVITY : int = 20
 
 const ELASTICITY : int = 1200
 
 #Jump
-const MAX_JUMPS : int = 2
+export var MAX_JUMPS : int = 2
 const JUMP_FORCE : int = 500
 const JUMP_MIN : int = 200
-var fallMultiplier : int = 2
-var lowJumpMultiplier : int = 10
 var jumps : int = MAX_JUMPS
 var landed = false
 
 
 #Wall Jumps
-const WALL_SLIDE_ACCEL : int = 10
+const WALL_SLIDE_ACCEL : int = 1
 const MAX_WALL_SLIDE_SPEED : int = 120
 
+#Velocities
 var velocity : Vector2 = Vector2(0, 0)
 var velocity_prev : Vector2 = Vector2()
+
+export var ground_momentum = 3
+export var air_momentum = 10
 
 var is_bullet_time = false
 
@@ -66,15 +69,18 @@ func _physics_process(delta):
 			velocity.y = min(velocity.y + WALL_SLIDE_ACCEL, MAX_WALL_SLIDE_SPEED)
 	
 	
-	#gravity
-	velocity.y += GRAVITY
+	#gravity with max fall speed
+	velocity.y = min(velocity.y + GRAVITY, MAX_FALL_SPEED)
 	
 	
 	#handle movement
 	velocity = move_and_slide(velocity, Vector2.UP)
 	
 	#slow to a stop
-	velocity.x = lerp(velocity.x, 0, 0.1)
+	if is_on_floor():
+		velocity.x = lerp(velocity.x, 0, 0.2)
+	else:
+		velocity.x = lerp(velocity.x, 0, 0.1)
 	
 	
 	#Squash and Stretch sprite based on movement
@@ -94,6 +100,8 @@ func _physics_process(delta):
 	
 	$AnimatedSprite.set_frame(int(floor(abs(deg_to_pointer / 36))))
 	
+	
+	#Bullet time testing
 	if Input.is_action_just_pressed("ability_1"):
 		is_bullet_time = !is_bullet_time
 	
@@ -122,7 +130,8 @@ func _on_Fallzone_body_entered(body):
 	get_tree().change_scene("res://scenes/Main.tscn")
 
 
-func _on_Gun_weapon_fired(recoil_vector, damage, hit_position):
+# Called when the gun is fired
+func _on_Gun_weapon_fired(recoil_vector, damage, hit_position, effect):
 	if not is_on_floor():
 		velocity.x = recoil_vector.x
 		velocity.y = min(recoil_vector.y, velocity.y)

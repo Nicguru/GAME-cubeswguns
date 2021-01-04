@@ -6,15 +6,15 @@ onready var hit_effect = preload("res://scenes/HitEffect.tscn")
 # var b = "text"
 
 
-func spawn_particles(pos):
-	var effect = hit_effect.instance()
+func spawn_particles(pos, effect):
 	effect.set_position(pos)
 	add_child(effect)
 	
 
-func _on_weapon_fired(recoil_vector, damage, hit_position):
+func _on_weapon_fired(recoil_vector, damage, hit_position, effect):
 	print("weapon fired")
-	spawn_particles(hit_position)
+	spawn_particles(hit_position, effect)
+	$ShakeCamera2D.add_trauma(0.3)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

@@ -7,16 +7,16 @@ extents = Vector2( 8.76317, 8.46094 )
 
 [node name="Enemy" type="RigidBody2D"]
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0.456, -8.657 )
+scale = Vector2( 1.002, 1 )
+shape = SubResource( 1 )
+
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 self_modulate = Color( 1, 0, 0, 1 )
 frames = ExtResource( 1 )
 animation = "look"
 offset = Vector2( 0, -10 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0.456, -8.657 )
-scale = Vector2( 1.002, 1 )
-shape = SubResource( 1 )
 
 [node name="GunPoint" type="Node2D" parent="."]
 position = Vector2( -4.949, -3.404 )
